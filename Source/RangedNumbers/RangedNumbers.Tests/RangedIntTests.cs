@@ -171,23 +171,23 @@ namespace RangedNumbers.Tests
             Assert.AreEqual("2147483646 + 4 > int.MaxValue", raisedArgs?.ImpossibleValue ?? 0);
         }
 
-        //[TestMethod]
-        //public void HandleGoing_Above_IntMaxValue_WithRangedInt()
-        //{
-        //    BoundaryExceededEventHandlerArgs raisedArgs = null;
+        [TestMethod]
+        public void HandleGoing_Above_IntMaxValue_WithRangedInt()
+        {
+            BoundaryExceededEventHandlerArgs raisedArgs = null;
 
-        //    BoundaryExceededEventHandler onErr = (object sender, BoundaryExceededEventHandlerArgs args) => raisedArgs = args;
+            BoundaryExceededEventHandler onErr = (object sender, BoundaryExceededEventHandlerArgs args) => raisedArgs = args;
 
-        //    var sut = new RangedInt(0, int.MaxValue, int.MaxValue - 1, onErr);
+            var sut = new RangedInt(0, int.MaxValue, int.MaxValue - 1, onErr);
 
-        //    var addFive = new RangedInt(5);
+            var addFive = new RangedInt(5);
 
-        //    sut += addFive;
+            sut += addFive;
 
-        //    Assert.AreEqual(int.MaxValue, (int)sut.Value);
-        //    Assert.IsNotNull(raisedArgs.ImpossibleValue);
-        //    Assert.AreEqual("2147483646 + 5 > int.MaxValue", raisedArgs?.ImpossibleValue ?? 0);
-        //}
+            Assert.AreEqual(int.MaxValue, (int)sut.Value);
+            Assert.IsNotNull(raisedArgs.ImpossibleValue);
+            Assert.AreEqual("2147483646 + 5 > int.MaxValue", raisedArgs?.ImpossibleValue ?? 0);
+        }
 
         [TestMethod]
         public void HandleGoing_Below_IntMinValue()
@@ -205,23 +205,23 @@ namespace RangedNumbers.Tests
             Assert.AreEqual("-2147483647 - 4 < int.MinValue", raisedArgs?.ImpossibleValue ?? 0);
         }
 
-        //[TestMethod]
-        //public void HandleGoing_Below_IntMinValue_WithRangedItn()
-        //{
-        //    BoundaryExceededEventHandlerArgs raisedArgs = null;
+        [TestMethod]
+        public void HandleGoing_Below_IntMinValue_WithRangedInt()
+        {
+            BoundaryExceededEventHandlerArgs raisedArgs = null;
 
-        //    BoundaryExceededEventHandler onErr = (object sender, BoundaryExceededEventHandlerArgs args) => raisedArgs = args;
+            BoundaryExceededEventHandler onErr = (object sender, BoundaryExceededEventHandlerArgs args) => raisedArgs = args;
 
-        //    var sut = new RangedInt(int.MinValue, int.MaxValue, int.MinValue + 1, onErr);
+            var sut = new RangedInt(int.MinValue, int.MaxValue, int.MinValue + 1, onErr);
 
 
-        //    var four = new RangedInt(4);
+            var four = new RangedInt(4);
 
-        //    sut -= four;
+            sut -= four;
 
-        //    Assert.AreEqual(int.MinValue, (int)sut.Value);
-        //    Assert.IsNotNull(raisedArgs.ImpossibleValue);
-        //    Assert.AreEqual("-2147483647 - 4 < int.MinValue", raisedArgs?.ImpossibleValue ?? 0);
-        //}
+            Assert.AreEqual(int.MinValue, (int)sut.Value);
+            Assert.IsNotNull(raisedArgs.ImpossibleValue);
+            Assert.AreEqual("-2147483647 - 4 < int.MinValue", raisedArgs?.ImpossibleValue ?? 0);
+        }
     }
 }

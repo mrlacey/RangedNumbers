@@ -5,6 +5,16 @@ namespace RangedNumbers
 {
     public struct RangedInt
     {
+        // TODO: support implicit conversion from sbyte
+        // TODO: support implicit conversion from byte
+        // TODO: support implicit conversion from short
+        // TODO: support implicit conversion from ushort
+        // TODO: support implicit conversion from char
+        // TODO: support implicit conversion from RangedSByte
+        // TODO: support implicit conversion from RangedByte
+        // TODO: support implicit conversion from RangedShort
+        // TODO: support implicit conversion from RangedUShort
+
         public int Value { get; private set; }
 
         public int MinValue { get; private set; }

@@ -7,5 +7,7 @@
         // TODO: support implicit conversion from RangedByte
         // TODO: support implicit conversion from sbyte
         // TODO: support implicit conversion from RangedSByte
+        public int Value { get; private set; }
+
     }
 }

@@ -22,7 +22,7 @@ namespace RangedNumbers.Tests
         [TestMethod]
         public void CanSetTo_LowerBoundary()
         {
-            var sut = new RangedInt(1, 5);
+            var sut = new RangedInt(2, 1, 5);
 
             sut.SetValue(sut.MinValue);
 
@@ -32,7 +32,7 @@ namespace RangedNumbers.Tests
         [TestMethod]
         public void SettingToBelow_LowerBoundary_ReturnsLowerBoundary()
         {
-            var sut = new RangedInt(2, 5);
+            var sut = new RangedInt(3, 2, 5);
 
             sut.SetValue(sut.MinValue - 1);
 
@@ -42,7 +42,7 @@ namespace RangedNumbers.Tests
         [TestMethod]
         public void CanSetTo_UpperBoundary()
         {
-            var sut = new RangedInt(1, 5);
+            var sut = new RangedInt(3, 1, 5);
 
             sut.SetValue(sut.MaxValue);
 
@@ -52,7 +52,7 @@ namespace RangedNumbers.Tests
         [TestMethod]
         public void SettingToAbove_UpperBoundary_ReturnsUpperBoundary()
         {
-            var sut = new RangedInt(2, 5);
+            var sut = new RangedInt(3, 2, 5);
 
             sut.SetValue(sut.MaxValue + 1);
 
@@ -62,9 +62,7 @@ namespace RangedNumbers.Tests
         [TestMethod]
         public void AddingToAbove_UpperBoundary_ReturnsUpperBoundary()
         {
-            var sut = new RangedInt(2, 5);
-
-            sut.SetValue(3);
+            var sut = new RangedInt(3, 2, 5);
 
             sut += 9;
 
@@ -74,9 +72,7 @@ namespace RangedNumbers.Tests
         [TestMethod]
         public void SubtractingToBelow_LowerBoundary_ReturnsLowerBoundary()
         {
-            var sut = new RangedInt(2, 5);
-
-            sut.SetValue(3);
+            var sut = new RangedInt(4, 2, 5);
 
             sut -= 9;
 
@@ -86,9 +82,7 @@ namespace RangedNumbers.Tests
         [TestMethod]
         public void Adding_WorksWith_Int()
         {
-            var sut = new RangedInt(2, 5);
-
-            sut.SetValue(3);
+            var sut = new RangedInt(3, 2, 5);
 
             sut += 9;
 
@@ -98,12 +92,9 @@ namespace RangedNumbers.Tests
         [TestMethod]
         public void Adding_WorksWith_RangedInt()
         {
-            var sut = new RangedInt(2, 5);
+            var sut = new RangedInt(3, 2, 5);
 
-            sut.SetValue(3);
-
-            var newValue = new RangedInt(3, 6);
-            newValue.SetValue(4);
+            var newValue = new RangedInt(4, 3, 6);
 
             sut += newValue;  // ~3+4
 
@@ -113,9 +104,7 @@ namespace RangedNumbers.Tests
         [TestMethod]
         public void Subtraction_WorksWith_Int()
         {
-            var sut = new RangedInt(2, 5);
-
-            sut.SetValue(3);
+            var sut = new RangedInt(3, 2, 5);
 
             sut -= 9;
 
@@ -125,12 +114,9 @@ namespace RangedNumbers.Tests
         [TestMethod]
         public void Subtraction_WorksWith_RangedInt()
         {
-            var sut = new RangedInt(2, 5);
+            var sut = new RangedInt(3, 2, 5);
 
-            sut.SetValue(3);
-
-            var newValue = new RangedInt(3, 6);
-            newValue.SetValue(4);
+            var newValue = new RangedInt(4, 3, 6);
 
             sut -= newValue;  // ~3-4
 
@@ -140,11 +126,11 @@ namespace RangedNumbers.Tests
         [TestMethod]
         public void EventRaisedWhen_LowerBoundaryExceeded()
         {
-            BoundaryExceededEventHandlerArgs raisedArgs = null;
+            BoundaryExceededArgs raisedArgs = null;
 
-            BoundaryExceededEventHandler onErr = (object sender, BoundaryExceededEventHandlerArgs args) => raisedArgs = args;
+            Action<BoundaryExceededArgs> onErr = (args) => raisedArgs = args;
 
-            var sut = new RangedInt(2, 5, 3, onErr);
+            var sut = new RangedInt(3, 2, 5, onErr);
 
             sut -= 4;
 
@@ -156,11 +142,11 @@ namespace RangedNumbers.Tests
         [TestMethod]
         public void HandleGoing_Above_IntMaxValue()
         {
-            BoundaryExceededEventHandlerArgs raisedArgs = null;
+            BoundaryExceededArgs raisedArgs = null;
 
-            BoundaryExceededEventHandler onErr = (object sender, BoundaryExceededEventHandlerArgs args) => raisedArgs = args;
+            Action<BoundaryExceededArgs> onErr = (args) => raisedArgs = args;
 
-            var sut = new RangedInt(0, int.MaxValue, int.MaxValue - 1, onErr);
+            var sut = new RangedInt(int.MaxValue - 1, 0, int.MaxValue, onErr);
 
             sut += 4;
 
@@ -174,11 +160,11 @@ namespace RangedNumbers.Tests
         [TestMethod]
         public void HandleGoing_Above_IntMaxValue_WithRangedInt()
         {
-            BoundaryExceededEventHandlerArgs raisedArgs = null;
+            BoundaryExceededArgs raisedArgs = null;
 
-            BoundaryExceededEventHandler onErr = (object sender, BoundaryExceededEventHandlerArgs args) => raisedArgs = args;
+            Action<BoundaryExceededArgs> onErr = (args) => raisedArgs = args;
 
-            var sut = new RangedInt(0, int.MaxValue, int.MaxValue - 1, onErr);
+            var sut = new RangedInt(int.MaxValue - 1, 0, int.MaxValue, onErr);
 
             var addFive = new RangedInt(5);
 
@@ -192,11 +178,11 @@ namespace RangedNumbers.Tests
         [TestMethod]
         public void HandleGoing_Below_IntMinValue()
         {
-            BoundaryExceededEventHandlerArgs raisedArgs = null;
+            BoundaryExceededArgs raisedArgs = null;
 
-            BoundaryExceededEventHandler onErr = (object sender, BoundaryExceededEventHandlerArgs args) => raisedArgs = args;
+            Action<BoundaryExceededArgs> onErr = (args) => raisedArgs = args;
 
-            var sut = new RangedInt(int.MinValue, int.MaxValue, int.MinValue + 1, onErr);
+            var sut = new RangedInt(int.MinValue + 1, int.MinValue, int.MaxValue, onErr);
 
             sut -= 4;
 
@@ -208,12 +194,11 @@ namespace RangedNumbers.Tests
         [TestMethod]
         public void HandleGoing_Below_IntMinValue_WithRangedInt()
         {
-            BoundaryExceededEventHandlerArgs raisedArgs = null;
+            BoundaryExceededArgs raisedArgs = null;
 
-            BoundaryExceededEventHandler onErr = (object sender, BoundaryExceededEventHandlerArgs args) => raisedArgs = args;
+            Action<BoundaryExceededArgs> onErr = (args) => raisedArgs = args;
 
-            var sut = new RangedInt(int.MinValue, int.MaxValue, int.MinValue + 1, onErr);
-
+            var sut = new RangedInt(int.MinValue + 1, int.MinValue, int.MaxValue, onErr);
 
             var four = new RangedInt(4);
 

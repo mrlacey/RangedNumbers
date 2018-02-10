@@ -24,7 +24,7 @@ namespace ExampleUsageCore.CSharp
 
             Console.WriteLine(bar.Value); // 10
 
-            RangedInt xyz = (7, 0, 10);
+            RangedInt xyz = (7, 0, 10);  // Funky C#7 syntax
 
             xyz += 5;
 

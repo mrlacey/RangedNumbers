@@ -6,10 +6,11 @@ namespace RangedNumbers
     {
         public int Value { get; private set; }
 
-        public int MinValue { get; private set; }
+        public int MinValue { get; }
 
-        public int MaxValue { get; private set; }
+        public int MaxValue { get; }
 
+        // TODO: test this being invoked even after original instance has been changed several times.
         public Action<BoundaryExceededArgs> OnBoundaryExceeded;
 
         public RangedInt(int value = 0, int minValue = int.MinValue, int maxValue = int.MaxValue, Action<BoundaryExceededArgs> onBoundaryExceeded = null)
@@ -20,7 +21,7 @@ namespace RangedNumbers
 
             this.OnBoundaryExceeded = onBoundaryExceeded;
 
-            // TODO: better handle initial value being invlaid
+            // TODO: better handle initial value being invalid
             //this.Value = minValue > value ? minValue : maxValue < value ? maxValue : value;
             this.Value = value; // set this as can't leave it unassigned but let SetValue handle logic
 
@@ -38,6 +39,11 @@ namespace RangedNumbers
         public static implicit operator RangedInt(int value)
         {
             return new RangedInt(value);
+        }
+
+        public static implicit operator RangedInt(string value)
+        {
+            return new RangedInt(int.Parse(value));
         }
 
         public static implicit operator RangedInt(byte value)
@@ -85,6 +91,7 @@ namespace RangedNumbers
             return new RangedInt(value.Value);
         }
 
+        // TODO: reveiew: what if this returned a new instance
         public void SetValue(int newValue)
         {
             if (newValue < this.MinValue)
@@ -103,6 +110,23 @@ namespace RangedNumbers
             }
         }
 
+        // TODO: Review this experimental method. If keep it need to add overloads that support setting from other types and include in other Ranged Types too.
+        public bool TrySetValue(int newValue, out RangedInt result)
+        {
+            if (newValue < MinValue || newValue > MaxValue)
+            {
+                result = null;
+                return false;
+            }
+            else
+            {
+                result = new RangedInt(newValue, MinValue, MaxValue, OnBoundaryExceeded);
+                return true;
+            }
+
+
+        }
+
         // TODO: test adding negative numbers
         public static RangedInt operator +(RangedInt original, int addition)
         {
@@ -111,7 +135,7 @@ namespace RangedNumbers
             if (int.MaxValue - original.Value < addition)
             {
                 result.SetValue(original.MaxValue);
-                result.OnBoundaryExceeded.Invoke(new BoundaryExceededArgs($"{original.Value} + {addition} > int.MaxValue"));
+                result.OnBoundaryExceeded?.Invoke(new BoundaryExceededArgs($"{original.Value} + {addition} > int.MaxValue"));
             }
             else
             {
@@ -128,7 +152,7 @@ namespace RangedNumbers
             if (int.MaxValue - original.Value < addition.Value)
             {
                 result.SetValue(original.MaxValue);
-                result.OnBoundaryExceeded.Invoke(new BoundaryExceededArgs($"{original.Value} + {addition.Value} > int.MaxValue"));
+                result.OnBoundaryExceeded?.Invoke(new BoundaryExceededArgs($"{original.Value} + {addition.Value} > int.MaxValue"));
             }
             else
             {
@@ -145,7 +169,7 @@ namespace RangedNumbers
             if (int.MaxValue - original.Value < subtraction)
             {
                 result.SetValue(original.MinValue);
-                result.OnBoundaryExceeded.Invoke(new BoundaryExceededArgs($"{original.Value} - {subtraction} < int.MinValue"));
+                result.OnBoundaryExceeded?.Invoke(new BoundaryExceededArgs($"{original.Value} - {subtraction} < int.MinValue"));
             }
             else
             {
@@ -162,7 +186,7 @@ namespace RangedNumbers
             if (int.MaxValue - original.Value < subtraction.Value)
             {
                 result.SetValue(original.MinValue);
-                result.OnBoundaryExceeded.Invoke(new BoundaryExceededArgs($"{original.Value} - {subtraction.Value} < int.MinValue"));
+                result.OnBoundaryExceeded?.Invoke(new BoundaryExceededArgs($"{original.Value} - {subtraction.Value} < int.MinValue"));
             }
             else
             {
@@ -246,6 +270,12 @@ namespace RangedNumbers
             return original.Value != right;
         }
 
+        // TODO: Bitwise operator also for RangedUInt, RangedLong, RangedUlong
+        public static RangedInt operator ~(RangedInt original)
+        {
+            return new RangedInt(~original.Value, original.MinValue, original.MaxValue, original.OnBoundaryExceeded);
+        }
+
         public bool Equals(RangedInt other)
         {
             return Equals(OnBoundaryExceeded, other.OnBoundaryExceeded)
@@ -257,7 +287,7 @@ namespace RangedNumbers
         public override bool Equals(object obj)
         {
             if (ReferenceEquals(null, obj)) return false;
-            return obj is RangedInt && Equals((RangedInt)obj);
+            return obj is RangedInt i && Equals(i);
         }
 
         public override int GetHashCode()

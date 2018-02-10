@@ -90,6 +90,16 @@ namespace RangedNumbers.Tests
         }
 
         [TestMethod]
+        public void Adding_WorksWith_Negative_Int()
+        {
+            var sut = new RangedInt(-10, -15, -5);
+
+            sut += 1;
+
+            Assert.AreEqual(sut.Value, -9);
+        }
+
+        [TestMethod]
         public void Adding_WorksWith_RangedInt()
         {
             var sut = new RangedInt(3, 2, 5);

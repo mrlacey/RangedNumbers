@@ -19,5 +19,6 @@ namespace RangedNumbers
         // TODO: support implicit conversion from RangedShort
         // TODO: support implicit conversion from ushort
         // TODO: support implicit conversion from RangedUShort
+        // all appropriate operators from https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/operators/index
     }
 }

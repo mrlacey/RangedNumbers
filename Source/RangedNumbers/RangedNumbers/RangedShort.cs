@@ -7,6 +7,7 @@
         // TODO: support implicit conversion from RangedByte
         // TODO: support implicit conversion from sbyte
         // TODO: support implicit conversion from RangedSByte
+        // all appropriate operators from https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/operators/index
         public int Value { get; private set; }
 
     }

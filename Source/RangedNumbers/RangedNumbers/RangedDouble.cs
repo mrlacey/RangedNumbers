@@ -19,5 +19,6 @@
         // TODO: support implicit conversion from RangedUShort
         // TODO: support implicit conversion from short
         // TODO: support implicit conversion from RangedShort
+        // all appropriate operators from https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/operators/index
     }
 }
